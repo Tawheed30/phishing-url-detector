@@ -1,0 +1,148 @@
+Last login: Wed Dec 24 16:00:08 on ttys002
+mohammedtawheed@Mohammeds-MacBook-Pro-2 mitre-soc-simulator % mkdir phishing-url-detector
+cd phishing-url-detector
+
+mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % mkdir data src reports
+touch README.md requirements.txt .gitignore
+touch data/sample_urls.txt
+touch src/main.py src/url_analyzer.py src/rules.py src/report_generator.py
+
+mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % python3 --version
+
+Python 3.9.6
+mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % Python 3.9+ 
+
+zsh: command not found: Python
+mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % python3 --version
+
+Python 3.9.6
+mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % python3 -m venv venv
+source venv/bin/activate
+
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/rules.py
+
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/url_analyzer.py
+
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano data/sample_urls.txt
+
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/report_generator.py
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  UW PICO 5.09                                                                                                    File: src/report_generator.py                                                                                                     Modified  
+
+[PHISHING] http://192.168.1.10/login (Score: 6)
+[PHISHING] https://secure-paypal.com.verify.account-update.ru (Score: 6)
+[SAFE] https://google.com (Score: 0)
+[SUSPICIOUS] http://free-gift-login.com (Score: 4)
+
+Report saved to reports/phishing_report.txt
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+^G Get Help                               ^O WriteOut                               ^R Read File                              ^Y Prev Pg                                ^K Cut Text                               ^C Cur Pos                                
+^X Exit                                   ^J Justify                                ^W Where is                               ^V Next Pg                                ^U UnCut Text                             ^T To Spell                               
