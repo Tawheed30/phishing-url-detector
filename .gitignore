@@ -1,0 +1,14 @@
+# Virtual environment
+venv/
+.env/
+
+# Python cache
+__pycache__/
+*.pyc
+
+# OS files
+.DS_Store
+
+# Reports (optional – comment out if you want to keep reports)
+# reports/*.txt
+
