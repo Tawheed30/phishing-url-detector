@@ -1,0 +1,31 @@
+PHISHING URL DETECTION REPORT
+===================================
+Generated on: 2025-12-24 19:32:29.493294
+
+URL: http://192.168.1.10/login
+Risk Score: 5
+Status: SUSPICIOUS
+Reasons:
+- Uses IP address instead of domain
+- Uses HTTP instead of HTTPS
+- Contains phishing keywords
+-----------------------------------
+URL: https://secure-paypal.com.verify.account-update.ru
+Risk Score: 3
+Status: SUSPICIOUS
+Reasons:
+- Too many subdomains
+- Contains phishing keywords
+-----------------------------------
+URL: https://google.com
+Risk Score: 0
+Status: SAFE
+Reasons: None
+-----------------------------------
+URL: http://free-gift-login.com
+Risk Score: 3
+Status: SUSPICIOUS
+Reasons:
+- Uses HTTP instead of HTTPS
+- Contains phishing keywords
+-----------------------------------
