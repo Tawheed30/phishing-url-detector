@@ -2179,88 +2179,69 @@ WARNING: You are using pip version 21.2.4; however, version 25.3 is available.
 You should consider upgrading via the '/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/bin/python3 -m pip install --upgrade pip' command.
 (venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/threat_intel.py
 
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/main.py
 
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % python3 src/main.py
+  UW PICO 5.09                                                                                                      File: src/threat_intel.py                                                                                                       Modified  
 
-  File "/Users/mohammedtawheed/Documents/phishing-url-detector/src/main.py", line 43
-    print("-" * 40)
-IndentationError: unexpected indent
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/main.py
+import os
+import hashlib
+import requests
+from dotenv import load_dotenv
 
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % python3 src/main.py
+load_dotenv()
 
-/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
-  warnings.warn(
-Traceback (most recent call last):
-  File "/Users/mohammedtawheed/Documents/phishing-url-detector/src/main.py", line 14, in <module>
-    for url in urls:
-NameError: name 'urls' is not defined
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/main.py   
+VT_API_KEY = os.getenv("VT_API_KEY")
+VT_URL = "https://www.virustotal.com/api/v3/urls/"
+
+def get_url_id(url):
+    return hashlib.sha256(url.encode()).hexdigest()
+
+def check_virustotal(url):
+    if not VT_API_KEY:
+        return None
+
+    url_id = get_url_id(url)
+    headers = {
+        "x-apikey": VT_API_KEY
+    }
+
+    response = requests.get(VT_URL + url_id, headers=headers)
+
+    if response.status_code != 200:
+        return None
+
+    data = response.json()
+    stats = data["data"]["attributes"]["last_analysis_stats"]
+
+    return {
+        "malicious": stats.get("malicious", 0),
+        "suspicious": stats.get("suspicious", 0),
+        "harmless": stats.get("harmless", 0)
+    }
 
 
-  UW PICO 5.09                                                                                                          File: src/main.py                                                                                                           Modified  
 
-from threat_intel import check_virustotal
-from url_analyzer import analyze_url
-from report_generator import generate_report
-from ml_detector import predict_phishing_ml
 
-DATA_FILE = "data/urls.txt"
 
-def main():
-    with open(DATA_FILE, "r") as file:
-        urls = file.readlines()
 
-    results = []
 
-    for url in urls:
-        url = url.strip()
-        if not url:
-            continue
 
-        score, reasons = analyze_url(url)
 
-        # Heuristic output
-        if score >= 3:
-            status = "SUSPICIOUS"
-            print(f"[SUSPICIOUS] {url} (Score: {score})")
-        else:
-            status = "SAFE"
-            print(f"[SAFE] {url} (Score: {score})")
 
-        # 🔥 ML inference
-        ml_label, ml_confidence = predict_phishing_ml(url)
 
-        if ml_label == 1:
-            print(f"[ML] PHISHING (Confidence: {ml_confidence})")
-        else:
-            print(f"[ML] SAFE (Confidence: {ml_confidence})")
 
-        # 🌐 VirusTotal
-        vt_result = check_virustotal(url)
 
-        if vt_result:
-            print(f"[VT] Malicious: {vt_result['malicious']} | Suspicious: {vt_result['suspicious']}")
-        else:
-            print("[VT] No data / API limit")
 
-        print("-" * 40)
 
-        results.append({
-            "url": url,
-            "score": score,
-            "status": status,
-            "reasons": reasons,
-            "ml_prediction": "PHISHING" if ml_label == 1 else "SAFE",
-            "ml_confidence": ml_confidence,
-            "vt_result": vt_result
-        })
 
-    generate_report(results)
 
-if __name__ == "__main__":
-    main()
+
+
+
+
+
+
+
+
 
 
 

@@ -2198,69 +2198,124 @@ Traceback (most recent call last):
 NameError: name 'urls' is not defined
 (venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/main.py   
 
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % python3 src/main.py
 
-  UW PICO 5.09                                                                                                          File: src/main.py                                                                                                           Modified  
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+[SUSPICIOUS] http://192.168.1.10/login (Score: 5)
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+[ML] SAFE (Confidence: 0.0)
+[VT] Malicious: 0 | Suspicious: 0
+----------------------------------------
+[SUSPICIOUS] https://secure-paypal.com.verify.account-update.ru (Score: 3)
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+[ML] PHISHING (Confidence: 0.7)
+[VT] No data / API limit
+----------------------------------------
+[SAFE] https://google.com (Score: 0)
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+[ML] SAFE (Confidence: 0.0)
+[VT] No data / API limit
+----------------------------------------
+[SUSPICIOUS] http://free-gift-login.com (Score: 3)
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+[ML] SAFE (Confidence: 0.0)
+[VT] No data / API limit
+----------------------------------------
+Report saved to reports/phishing_report.txt
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % def decide_response(score, ml_label, ml_confidence, vt_malicious):
+    """
+    Returns automated SOC-style response decision
+    """
 
-from threat_intel import check_virustotal
-from url_analyzer import analyze_url
-from report_generator import generate_report
-from ml_detector import predict_phishing_ml
+    if vt_malicious > 0:
+        return "BLOCK"
 
-DATA_FILE = "data/urls.txt"
+    if ml_label == 1 and ml_confidence >= 0.7:
+        return "BLOCK"
 
-def main():
-    with open(DATA_FILE, "r") as file:
-        urls = file.readlines()
+    if score >= 3:
+        return "MONITOR"
 
-    results = []
+    return "ALLOW"
 
-    for url in urls:
-        url = url.strip()
-        if not url:
-            continue
+if if if> 
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/soar_engine.py
 
-        score, reasons = analyze_url(url)
+  UW PICO 5.09                                                                                                       File: src/soar_engine.py                                                                                                       Modified  
 
-        # Heuristic output
-        if score >= 3:
-            status = "SUSPICIOUS"
-            print(f"[SUSPICIOUS] {url} (Score: {score})")
-        else:
-            status = "SAFE"
-            print(f"[SAFE] {url} (Score: {score})")
+def decide_response(score, ml_label, ml_confidence, vt_malicious):
+    """
+    Returns automated SOC-style response decision
+    """
 
-        # 🔥 ML inference
-        ml_label, ml_confidence = predict_phishing_ml(url)
+    if vt_malicious > 0:
+        return "BLOCK"
 
-        if ml_label == 1:
-            print(f"[ML] PHISHING (Confidence: {ml_confidence})")
-        else:
-            print(f"[ML] SAFE (Confidence: {ml_confidence})")
+    elif ml_label == 1 and ml_confidence >= 0.7:
+        return "BLOCK"
 
-        # 🌐 VirusTotal
-        vt_result = check_virustotal(url)
+    elif score >= 3:
+        return "MONITOR"
 
-        if vt_result:
-            print(f"[VT] Malicious: {vt_result['malicious']} | Suspicious: {vt_result['suspicious']}")
-        else:
-            print("[VT] No data / API limit")
+    else:
+        return "ALLOW"
 
-        print("-" * 40)
 
-        results.append({
-            "url": url,
-            "score": score,
-            "status": status,
-            "reasons": reasons,
-            "ml_prediction": "PHISHING" if ml_label == 1 else "SAFE",
-            "ml_confidence": ml_confidence,
-            "vt_result": vt_result
-        })
 
-    generate_report(results)
 
-if __name__ == "__main__":
-    main()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

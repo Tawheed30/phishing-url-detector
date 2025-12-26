@@ -12,3 +12,5 @@ __pycache__/
 # Reports (optional – comment out if you want to keep reports)
 # reports/*.txt
 
+.env
+

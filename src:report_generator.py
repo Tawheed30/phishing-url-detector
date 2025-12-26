@@ -2118,149 +2118,69 @@ Traceback (most recent call last):
 ValueError: too many values to unpack (expected 4)
 (venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/report_generator.py
 
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % python3 src/main.py
 
-[SUSPICIOUS] http://192.168.1.10/login (Score: 5)
-/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
-  warnings.warn(
-/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
-  warnings.warn(
-[ML] SAFE (Confidence: 0.0)
-----------------------------------------
-[SUSPICIOUS] https://secure-paypal.com.verify.account-update.ru (Score: 3)
-/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
-  warnings.warn(
-/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
-  warnings.warn(
-[ML] PHISHING (Confidence: 0.7)
-----------------------------------------
-[SAFE] https://google.com (Score: 0)
-/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
-  warnings.warn(
-/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
-  warnings.warn(
-[ML] SAFE (Confidence: 0.0)
-----------------------------------------
-[SUSPICIOUS] http://free-gift-login.com (Score: 3)
-/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
-  warnings.warn(
-/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
-  warnings.warn(
-[ML] SAFE (Confidence: 0.0)
-----------------------------------------
-Report saved to reports/phishing_report.txt
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano .env
+  UW PICO 5.09                                                                                                    File: src/report_generator.py                                                                                                     Modified  
 
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano .gitignore
+from datetime import datetime
+import os   
+            
+def generate_report(results):
+    os.makedirs("reports", exist_ok=True)
+            
+    report_path = "reports/phishing_report.txt"
+            
+    with open(report_path, "w") as report:
+        report.write("PHISHING URL DETECTION REPORT\n")
+        report.write("=" * 40 + "\n")
+        report.write(f"Generated on: {datetime.now()}\n\n")
+            
+        for item in results:
+            report.write(f"URL: {item['url']}\n")
+            report.write(f"Risk Score: {item['score']}\n")
+            report.write(f"Status: {item['status']}\n")
+            report.write(f"ML Prediction: {item['ml_prediction']}\n")
+            report.write(f"ML Confidence: {item['ml_confidence']}\n")
+            
+            if item["reasons"]:
+                report.write("Reasons:\n")
+                for reason in item["reasons"]:
+                    report.write(f"- {reason}\n")
+            else:
+                report.write("Reasons: None\n")
 
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % pip install requests python-dotenv
-pip freeze > requirements.txt
+            report.write("-" * 40 + "\n")
 
-Collecting requests
-  Downloading requests-2.32.5-py3-none-any.whl (64 kB)
-     |████████████████████████████████| 64 kB 520 kB/s 
-Collecting python-dotenv
-  Downloading python_dotenv-1.2.1-py3-none-any.whl (21 kB)
-Collecting idna<4,>=2.5
-  Downloading idna-3.11-py3-none-any.whl (71 kB)
-     |████████████████████████████████| 71 kB 1.8 MB/s 
-Collecting charset_normalizer<4,>=2
-  Downloading charset_normalizer-3.4.4-cp39-cp39-macosx_10_9_universal2.whl (209 kB)
-     |████████████████████████████████| 209 kB 2.0 MB/s 
-Collecting urllib3<3,>=1.21.1
-  Downloading urllib3-2.6.2-py3-none-any.whl (131 kB)
-     |████████████████████████████████| 131 kB 6.5 MB/s 
-Collecting certifi>=2017.4.17
-  Downloading certifi-2025.11.12-py3-none-any.whl (159 kB)
-     |████████████████████████████████| 159 kB 6.6 MB/s 
-Installing collected packages: urllib3, idna, charset-normalizer, certifi, requests, python-dotenv
-Successfully installed certifi-2025.11.12 charset-normalizer-3.4.4 idna-3.11 python-dotenv-1.2.1 requests-2.32.5 urllib3-2.6.2
-WARNING: You are using pip version 21.2.4; however, version 25.3 is available.
-You should consider upgrading via the '/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/bin/python3 -m pip install --upgrade pip' command.
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/threat_intel.py
-
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/main.py
-
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % python3 src/main.py
-
-  File "/Users/mohammedtawheed/Documents/phishing-url-detector/src/main.py", line 43
-    print("-" * 40)
-IndentationError: unexpected indent
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/main.py
-
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % python3 src/main.py
-
-/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
-  warnings.warn(
-Traceback (most recent call last):
-  File "/Users/mohammedtawheed/Documents/phishing-url-detector/src/main.py", line 14, in <module>
-    for url in urls:
-NameError: name 'urls' is not defined
-(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/main.py   
+    print("Report saved to reports/phishing_report.txt")
 
 
-  UW PICO 5.09                                                                                                          File: src/main.py                                                                                                           Modified  
 
-from threat_intel import check_virustotal
-from url_analyzer import analyze_url
-from report_generator import generate_report
-from ml_detector import predict_phishing_ml
 
-DATA_FILE = "data/urls.txt"
 
-def main():
-    with open(DATA_FILE, "r") as file:
-        urls = file.readlines()
 
-    results = []
 
-    for url in urls:
-        url = url.strip()
-        if not url:
-            continue
 
-        score, reasons = analyze_url(url)
 
-        # Heuristic output
-        if score >= 3:
-            status = "SUSPICIOUS"
-            print(f"[SUSPICIOUS] {url} (Score: {score})")
-        else:
-            status = "SAFE"
-            print(f"[SAFE] {url} (Score: {score})")
 
-        # 🔥 ML inference
-        ml_label, ml_confidence = predict_phishing_ml(url)
 
-        if ml_label == 1:
-            print(f"[ML] PHISHING (Confidence: {ml_confidence})")
-        else:
-            print(f"[ML] SAFE (Confidence: {ml_confidence})")
 
-        # 🌐 VirusTotal
-        vt_result = check_virustotal(url)
 
-        if vt_result:
-            print(f"[VT] Malicious: {vt_result['malicious']} | Suspicious: {vt_result['suspicious']}")
-        else:
-            print("[VT] No data / API limit")
 
-        print("-" * 40)
 
-        results.append({
-            "url": url,
-            "score": score,
-            "status": status,
-            "reasons": reasons,
-            "ml_prediction": "PHISHING" if ml_label == 1 else "SAFE",
-            "ml_confidence": ml_confidence,
-            "vt_result": vt_result
-        })
 
-    generate_report(results)
 
-if __name__ == "__main__":
-    main()
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

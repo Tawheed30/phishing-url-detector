@@ -2198,69 +2198,242 @@ Traceback (most recent call last):
 NameError: name 'urls' is not defined
 (venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/main.py   
 
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % python3 src/main.py
 
-  UW PICO 5.09                                                                                                          File: src/main.py                                                                                                           Modified  
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+[SUSPICIOUS] http://192.168.1.10/login (Score: 5)
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+[ML] SAFE (Confidence: 0.0)
+[VT] Malicious: 0 | Suspicious: 0
+----------------------------------------
+[SUSPICIOUS] https://secure-paypal.com.verify.account-update.ru (Score: 3)
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+[ML] PHISHING (Confidence: 0.7)
+[VT] No data / API limit
+----------------------------------------
+[SAFE] https://google.com (Score: 0)
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+[ML] SAFE (Confidence: 0.0)
+[VT] No data / API limit
+----------------------------------------
+[SUSPICIOUS] http://free-gift-login.com (Score: 3)
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+[ML] SAFE (Confidence: 0.0)
+[VT] No data / API limit
+----------------------------------------
+Report saved to reports/phishing_report.txt
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % def decide_response(score, ml_label, ml_confidence, vt_malicious):
+    """
+    Returns automated SOC-style response decision
+    """
 
-from threat_intel import check_virustotal
-from url_analyzer import analyze_url
-from report_generator import generate_report
-from ml_detector import predict_phishing_ml
+    if vt_malicious > 0:
+        return "BLOCK"
 
-DATA_FILE = "data/urls.txt"
+    if ml_label == 1 and ml_confidence >= 0.7:
+        return "BLOCK"
 
-def main():
-    with open(DATA_FILE, "r") as file:
-        urls = file.readlines()
+    if score >= 3:
+        return "MONITOR"
 
-    results = []
+    return "ALLOW"
 
-    for url in urls:
-        url = url.strip()
-        if not url:
-            continue
+if if if> 
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/soar_engine.py
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % python3
 
-        score, reasons = analyze_url(url)
+Python 3.9.6 (default, Dec  2 2025, 07:27:58) 
+[Clang 17.0.0 (clang-1700.6.3.2)] on darwin
+Type "help", "copyright", "credits" or "license" for more information.
+>>> 
+KeyboardInterrupt
+>>> 
+KeyboardInterrupt
+>>> from src.soar_engine import decide_response
+>>> decide_response(5, 1, 0.8, 0)
+'BLOCK'
+>>> src/ml_predictor.py
+Traceback (most recent call last):
+  File "<stdin>", line 1, in <module>
+NameError: name 'src' is not defined
+>>> exit()
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/ml_predictor.py                                                      
 
-        # Heuristic output
-        if score >= 3:
-            status = "SUSPICIOUS"
-            print(f"[SUSPICIOUS] {url} (Score: {score})")
-        else:
-            status = "SAFE"
-            print(f"[SAFE] {url} (Score: {score})")
 
-        # 🔥 ML inference
-        ml_label, ml_confidence = predict_phishing_ml(url)
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % python3 src/main.py
 
-        if ml_label == 1:
-            print(f"[ML] PHISHING (Confidence: {ml_confidence})")
-        else:
-            print(f"[ML] SAFE (Confidence: {ml_confidence})")
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+[SUSPICIOUS] http://192.168.1.10/login (Score: 5)
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+[ML] SAFE (Confidence: 0.0)
+[VT] Malicious: 0 | Suspicious: 0
+----------------------------------------
+[SUSPICIOUS] https://secure-paypal.com.verify.account-update.ru (Score: 3)
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+[ML] PHISHING (Confidence: 0.7)
+[VT] No data / API limit
+----------------------------------------
+[SAFE] https://google.com (Score: 0)
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+[ML] SAFE (Confidence: 0.0)
+[VT] No data / API limit
+----------------------------------------
+[SUSPICIOUS] http://free-gift-login.com (Score: 3)
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py:2739: UserWarning: X does not have valid feature names, but LogisticRegression was fitted with feature names
+  warnings.warn(
+[ML] SAFE (Confidence: 0.0)
+[VT] No data / API limit
+----------------------------------------
+Report saved to reports/phishing_report.txt
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/main.py
 
-        # 🌐 VirusTotal
-        vt_result = check_virustotal(url)
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/main.py
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % UserWarning: X does not have valid feature names
 
-        if vt_result:
-            print(f"[VT] Malicious: {vt_result['malicious']} | Suspicious: {vt_result['suspicious']}")
-        else:
-            print("[VT] No data / API limit")
+zsh: command not found: UserWarning:
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % import pandas as pd
 
-        print("-" * 40)
+def predict_phishing_ml(url):
+    features = extract_features(url)
 
-        results.append({
-            "url": url,
-            "score": score,
-            "status": status,
-            "reasons": reasons,
-            "ml_prediction": "PHISHING" if ml_label == 1 else "SAFE",
-            "ml_confidence": ml_confidence,
-            "vt_result": vt_result
-        })
+    df = pd.DataFrame([features], columns=[
+        "url_length",
+        "has_ip",
+        "has_https",
+        "num_dots",
+        "has_suspicious_words"
+    ])
 
-    generate_report(results)
+    prediction = model.predict(df)[0]
+    confidence = max(model.predict_proba(df)[0])
 
-if __name__ == "__main__":
+    return prediction, round(confidence, 2)
+
+zsh: command not found: import
+zsh: no matches found: predict_phishing_ml(url):
+zsh: missing delimiter for 'u' glob qualifier
+zsh: unknown file attribute:  
+zsh: no matches found: model.predict(df)[0]
+zsh: no matches found: max(model.predict_proba(df)[0])
+zsh: number expected
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/ml_detector.py
+
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % python3 src/main.py
+
+/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/urllib3/__init__.py:35: NotOpenSSLWarning: urllib3 v2 only supports OpenSSL 1.1.1+, currently the 'ssl' module is compiled with 'LibreSSL 2.8.3'. See: https://github.com/urllib3/urllib3/issues/3020
+  warnings.warn(
+[SUSPICIOUS] http://192.168.1.10/login (Score: 5)
+Traceback (most recent call last):
+  File "/Users/mohammedtawheed/Documents/phishing-url-detector/src/main.py", line 60, in <module>
     main()
+  File "/Users/mohammedtawheed/Documents/phishing-url-detector/src/main.py", line 30, in main
+    ml_label, ml_confidence = predict_phishing_ml(url)
+  File "/Users/mohammedtawheed/Documents/phishing-url-detector/src/ml_detector.py", line 26, in predict_phishing_ml
+    prediction = model.predict(df)[0]
+  File "/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/linear_model/_base.py", line 374, in predict
+    scores = self.decision_function(X)
+  File "/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/linear_model/_base.py", line 351, in decision_function
+    X = validate_data(self, X, accept_sparse="csr", reset=False)
+  File "/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py", line 2919, in validate_data
+    _check_feature_names(_estimator, X, reset=reset)
+  File "/Users/mohammedtawheed/Documents/phishing-url-detector/phishing-url-detector/venv/lib/python3.9/site-packages/sklearn/utils/validation.py", line 2777, in _check_feature_names
+    raise ValueError(message)
+ValueError: The feature names should match those that were passed during fit.
+Feature names unseen at fit time:
+- num_dots
+Feature names seen at fit time, yet now missing:
+- subdomain_count
+
+(venv) mohammedtawheed@Mohammeds-MacBook-Pro-2 phishing-url-detector % nano src/ml_detector.py
+
+
+  UW PICO 5.09                                                                                                       File: src/ml_detector.py                                                                                                       Modified  
+
+import pandas as pd
+import joblib
+from urllib.parse import urlparse
+    
+model = joblib.load("ml/phishing_model.pkl")
+    
+def extract_features(url):
+    parsed = urlparse(url)
+    hostname = parsed.hostname or ""
+    
+    return [
+        len(url),                                   # url_length
+        int(any(char.isdigit() for char in hostname)),  # has_ip
+        int(url.startswith("https")),               # has_https
+        hostname.count('.') - 1 if hostname else 0, # subdomain_count
+        int(any(word in url.lower() for word in ["login", "verify", "secure", "bank", "free", "gift"]))
+    ]
+    
+def predict_phishing_ml(url):
+    features = extract_features(url)
+    
+    df = pd.DataFrame([features], columns=[
+        "url_length",
+        "has_ip",
+        "has_https",
+        "subdomain_count",
+        "has_suspicious_words"
+    ])
+    
+    prediction = model.predict(df)[0]
+    confidence = max(model.predict_proba(df)[0])
+
+    return prediction, round(confidence, 2)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
